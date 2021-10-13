@@ -7,7 +7,7 @@
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kiva/protocol.git"
+    "url": "git+https://github.com/kiva/protocol-reporting.git"
   },
   "scripts": {
     "build": "rimraf dist && tsc",
