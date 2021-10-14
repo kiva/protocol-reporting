@@ -23,11 +23,6 @@ In first tab start the DB with ports exposed
 docker compose -f docker-compose.local.yml up
 ```
 
-You will also need to update your .env file to refernce the DB host as localhost instead of the docker network name
-```
-POSTGRES_HOST=localhost
-```
-
 In second tab start server in dev mode which uses nodemon to auto-restart when it detects changes
 ```bash
 npm run start:dev
@@ -38,7 +33,17 @@ The server will be exposed locally on localhost:3022 and will connect to the doc
 ## Production
 
 To get an idea of how the server will run in production you can spin up the docker-compose which has the production image
+Right now we don't test the production image in circle ci because it takes quite a long time to set up, however, if we 
+see any issues with the production image in the future we can add a prod-test job, and spin up docker-compose with --abort-on-container-exit
+which will inform us if there's an issue with the production image
+
+To test the prod docker compose locally you will also need to update your .env file to refernce the DB host using docker network name
+```
+POSTGRES_HOST=reporting-db
+```
+
+And then build and run the docker compose files
 ```bash
 docker compose build
-docker compose up
+docker compose up --abort-on-container-exit
 ```
