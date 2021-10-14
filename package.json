@@ -28,7 +28,7 @@
     "express-jwt": "^6.0.0",
     "jwks-rsa": "^2.0.0",
     "opentracing": "^0.14.5",
-    "protocol-common": "^0.1.48",
+    "protocol-common": "^0.1.49",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.4.0",
     "swagger-ui-express": "^4.1.6",

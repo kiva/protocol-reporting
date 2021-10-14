@@ -1,0 +1,71 @@
+# The first version spins up the production version of the reporting service with a corresponding DB
+# The local version spins up just the DB with ports exposed so that you can run the service via npm from you Mac
+#
+version: '3.5'
+
+networks:
+  agency-network:
+    name: agency-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
+
+services:
+  protocol-reporting:
+    build:
+      context: ./
+      dockerfile: Dockerfile.production
+    image: protocol-reporting
+    container_name: protocol-reporting
+    working_dir: /www
+    ports:
+      - "3022:3022"
+    expose:
+      - "3022"
+    networks:
+      - agency-network
+    tty: true
+    depends_on:
+      - reporting-db
+    environment:
+      - NODE_ENV=LOCAL
+      - POSTGRES_DB=reportingdb
+
+  reporting-db:
+    image: postgres:11
+    container_name: reporting-db
+    command: postgres
+    networks:
+      - agency-network
+    tty: true
+    environment:
+      - POSTGRES_DB=reportingdb
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=dbpass
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=reporting-db
+
+# ----------LOCAL MODE----------
+
+# version: '3.5'
+
+# services:
+#   reporting-db:
+#     image: postgres:11
+#     container_name: reporting-db
+#     command: postgres
+#     env_file:
+#       - .env
+#     tty: true
+#     ports:
+#       - 5432:5432
+#     expose:
+#       - 5432
+#     environment:
+#       - POSTGRES_DB=reportingdb
+#       - POSTGRES_USER=dbuser
+#       - POSTGRES_PASSWORD=dbpass
+#       - POSTGRES_PORT=5432
+#       - POSTGRES_HOST=reporting-db
