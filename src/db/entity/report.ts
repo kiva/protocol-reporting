@@ -58,11 +58,11 @@ export class Report {
      @Index()
      @Column({ type: 'varchar' })
      result_code: string;
-     
+
     /**
      * Boolean value if exchange was successful
      */
      @Index()
      @Column({ type: 'boolean' })
-     success: boolean;     
+     success: boolean;
 }
