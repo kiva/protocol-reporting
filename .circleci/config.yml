@@ -12,6 +12,23 @@ jobs:
       - run: npm run lint
       - run: npm run test
 
+  prod-test:
+    machine:
+      docker_layer_caching: true
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run:
+          name: Prepare Environment
+          command: |
+            cp dummy.env .env
+      - run:
+          name: Start docker compose and ensure all services start
+          command: |
+            docker network prune -f
+            docker-compose build --no-cache
+            docker-compose up --force-recreate --abort-on-container-exit
+
 workflows:
   build-test-deploy:
     jobs:
@@ -19,9 +36,14 @@ workflows:
           filters: # run for all branches AND tags
             tags:
               only: /.*/
+      - prod-test:
+          filters: # run for all branches AND tags
+            tags:
+              only: /.*/
       - docker/publish:
           requires:
             - build-and-test
+            - prod-test
           filters: # only run for semver tagged versions
             tags:
               only: /^([0-9]+)\.([0-9]+)\.([0-9]+)/

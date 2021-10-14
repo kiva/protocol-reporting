@@ -11,6 +11,7 @@ It also exposes a GraphQL API to handle searching, filtering, sorting, etc for a
 Run:
 ```bash
 npm install
+cp dummy.env .env
 ```
 
 ## Developing
@@ -20,6 +21,11 @@ For local development it's easiest to run the service directly from your comupte
 In first tab start the DB with ports exposed
 ```bash
 docker compose -f docker-compose.local.yml up
+```
+
+You will also need to update your .env file to refernce the DB host as localhost instead of the docker network name
+```
+POSTGRES_HOST=localhost
 ```
 
 In second tab start server in dev mode which uses nodemon to auto-restart when it detects changes
