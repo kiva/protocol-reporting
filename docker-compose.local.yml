@@ -1,0 +1,22 @@
+# The local version spins up just the DB with ports exposed so that you can run the service via npm from you computer
+#
+version: '3.5'
+
+services:
+  reporting-db:
+    image: postgres:11
+    container_name: reporting-db
+    command: postgres
+    env_file:
+      - .env
+    tty: true
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_DB=reportingdb
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=dbpass
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=reporting-db
