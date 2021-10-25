@@ -1,15 +1,14 @@
 import { Injectable, INestApplication } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { json } from 'body-parser';
-import { ProtocolExceptionFilter } from 'protocol-common/protocol.exception.filter';
 import { DatadogLogger } from 'protocol-common/datadog.logger';
 import { Logger } from 'protocol-common/logger';
 import { traceware } from 'protocol-common/tracer';
 import { HttpConstants } from 'protocol-common/http-context/http.constants';
-import { Constants } from 'protocol-common/constants';
 
 /**
- * All external traffic will be routed through gateway so no need for things like rate-limiting here
+ * Sets up global functionality
+ * Note we don't use protocol exception filter because Graphql handles errors in it's own unique well
+ * And we don't use swagger since Graphql provides it's own documentation
  */
 @Injectable()
 export class AppService {
@@ -22,20 +21,7 @@ export class AppService {
         app.useLogger(logger);
         app.use(traceware(process.env.SERVICE_NAME));
 
-        app.useGlobalFilters(new ProtocolExceptionFilter());
-
         // Increase json parse size to handle encoded images
         app.use(json({ limit: HttpConstants.JSON_LIMIT }));
-
-        if (process.env.NODE_ENV === Constants.LOCAL) {
-            // Set up internal documentation at /api
-            const options = new DocumentBuilder()
-                .setTitle('Protocol Reporting')
-                .setDescription('Internal Documentation for the Protocol Reporting microservice')
-                .setVersion('1.0')
-                .build();
-            const document = SwaggerModule.createDocument(app, options);
-            SwaggerModule.setup('api-docs', app, document);
-        }
     }
 }

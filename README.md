@@ -47,3 +47,50 @@ And then build and run the docker compose files
 docker compose build
 docker compose up --abort-on-container-exit
 ```
+
+## Graphql
+
+You can access a convenient graphql GUI at ```localhost:3022/graphql```
+Here are some sample queries
+
+Add a report:
+```
+mutation {
+  createOneReport(input: {
+    report: {
+      auth_method: "FINGERPRINT",
+      verifier_id: "1",
+      verifier_user_id: "abc",
+      request_id: "1",
+      session_id: "1",
+      result_code:"SUCCESS",
+      success: true
+    }
+  }) {
+    id,
+    create_time
+  }
+}
+```
+
+Query reports with filter getting a cursor:
+```
+{
+  reports (filter: { auth_method: { eq: "FINGERPRINT" } } ) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+      	id
+    		create_time
+    		auth_method
+      }
+      cursor
+    }
+  }
+}
+```
