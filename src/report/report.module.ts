@@ -1,21 +1,19 @@
 import { Module } from '@nestjs/common';
-import { ReportService } from './report.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Report } from '../db/entity/report';
-import { ReportController } from './report.controller';
+import { NestjsQueryGraphQLModule } from '@nestjs-query/query-graphql';
+import { NestjsQueryTypeOrmModule } from '@nestjs-query/query-typeorm';
+import { ReportDTO } from './report.dto';
 
 /**
- * TODO update to work with graphql
+ * Use NestjsQuery to register typeorm with graphql and set the default resolvers
  */
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Report]),
+        NestjsQueryGraphQLModule.forFeature({
+            imports: [NestjsQueryTypeOrmModule.forFeature([Report])],
+            resolvers: [{ DTOClass: ReportDTO, EntityClass: Report }],
+          }),
     ],
-    controllers: [
-        ReportController
-    ],
-    providers: [
-        ReportService
-    ],
+
 })
 export class ReportModule {}

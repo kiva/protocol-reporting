@@ -6,7 +6,7 @@ export class Report1634203521243 implements MigrationInterface {
         queryRunner.query(`
             CREATE TABLE IF NOT EXISTS report (
                 id SERIAL PRIMARY KEY,
-                create_time TIMESTAMPTZ,
+                create_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
                 auth_method VARCHAR,
                 verifier_id VARCHAR,
                 verifier_user_id VARCHAR,
