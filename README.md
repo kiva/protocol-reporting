@@ -50,6 +50,9 @@ docker compose up --abort-on-container-exit
 
 ## Graphql
 
+You can access a convenient graphql GUI at ```localhost:3022/graphql```
+Here are some sample queries
+
 Add a report:
 ```
 mutation {
@@ -70,4 +73,24 @@ mutation {
 }
 ```
 
-Query reports with filter getting a cursor 
+Query reports with filter getting a cursor:
+```
+{
+  reports (filter: { auth_method: { eq: "FINGERPRINT" } } ) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+      	id
+    		create_time
+    		auth_method
+      }
+      cursor
+    }
+  }
+}
+```
