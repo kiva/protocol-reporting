@@ -18,6 +18,11 @@ cp dummy.env .env
 
 For local development it's easiest to run the service directly from your comupter and connect to a dockerized DB
 
+You will also need to update your .env file to refernce the DB host using localhost, not the docker network name
+```
+POSTGRES_HOST=localhost
+```
+
 In first tab start the DB with ports exposed
 ```bash
 docker compose -f docker-compose.local.yml up
@@ -36,11 +41,6 @@ To get an idea of how the server will run in production you can spin up the dock
 Right now we don't test the production image in circle ci because it takes quite a long time to set up, however, if we 
 see any issues with the production image in the future we can add a prod-test job, and spin up docker-compose with --abort-on-container-exit
 which will inform us if there's an issue with the production image
-
-To test the prod docker compose locally you will also need to update your .env file to refernce the DB host using docker network name
-```
-POSTGRES_HOST=reporting-db
-```
 
 And then build and run the docker compose files
 ```bash
