@@ -10,7 +10,43 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: npm run lint
-      - run: npm run test
+      - run: npm run test:local
+
+  integration-test:
+    machine:
+      docker_layer_caching: true
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run:
+          name: setup shell environment
+          command: |
+            cp dummy.env .env
+            echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+      - run:
+          name: node npm setup
+          command: |
+              nvm install v14.15.1
+              nvm alias default v14.15.1
+              npm install
+      - run:
+          name: Start postgres docker compose and wait for readiness
+          command: |
+            docker-compose build
+            docker-compose up -d
+            sleep 15
+      - run:
+          name: Run tests
+          command: |
+            if ! npm run test:integration ; then
+              echo "Tests failed. Server logs:";
+              docker-compose logs;
+              exit 1;
+            fi
+      - run:
+          name: Run tests
+          command: |
+            npm run test
 
 workflows:
   build-test-deploy:
@@ -19,9 +55,16 @@ workflows:
           filters: # run for all branches AND tags
             tags:
               only: /.*/
+      - integration-test:
+          requires:
+            - build-and-test
+          filters: # run for all branches AND tags
+            tags:
+              only: /.*/
       - docker/publish:
           requires:
             - build-and-test
+            - integration-test
           filters: # only run for semver tagged versions
             tags:
               only: /^([0-9]+)\.([0-9]+)\.([0-9]+)/
