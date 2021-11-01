@@ -1,0 +1,71 @@
+# Default values for helm-config.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+#
+# Update these when you copy the chart to your own repo so they match your
+# service's specifics.
+
+replicaCount: 1
+
+image:
+  repository: kivaprotocol/protocol-reporting
+  tag: latest # leave this as latest. CICD will set a specific version tag.
+  pullPolicy: Always
+  imagePullSecrets:
+    - name: "regcred"
+
+nameOverride: "protocol-reporting"
+fullnameOverride: "protocol-reporting"
+secrets: "protocol-reporting"
+
+strategy:
+  type: "RollingUpdate"
+
+service:
+  type: ClusterIP
+  port: 3022
+  containerPort: 3022
+  targetPort: 3022
+  portName: http
+
+resources:
+  limits:
+    cpu: 1100m
+    memory: 607164212
+  requests:
+    cpu: 1100m
+    memory: 607164212
+
+readiness:
+  initialDelaySeconds: 20
+  timeoutSeconds: 1
+  path: /healthz
+
+liveness:
+  initialDelaySeconds: 20
+  timeoutSeconds: 10
+  path: /healthz
+
+ingress:
+  enabled: false # set to true if component needs ingress
+  host: "replaceme.replacethisdomain"
+  class: nginx-ingress-external
+  secret: "replaceme-tls"
+
+# By default services should disable this option as it is used to give the pod
+# elevated k8s privileges
+serviceAccount:
+  enabled: false
+
+# Uncomment below to allocate pods to a specific node type.
+#
+#tolerations:
+#  - effect: NoSchedule
+#    key: crypto
+#    operator: Equal
+#    value: "true"
+#
+#nodeSelector:
+#    dedicated: crypto
+#
+#affinity: {}

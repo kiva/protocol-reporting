@@ -48,6 +48,26 @@ jobs:
           command: |
             npm run test
 
+  push-to-dev:
+    machine:
+      image: ubuntu-1604:201903-01
+    parameters:
+      tag:
+        default: latest
+        description: Tag of protocol-reporting to push to dev
+        type: string
+    steps:
+      - checkout
+      - kube-orb/install
+      - kube-orb/install-kubeconfig:
+          kubeconfig: KUBECONFIG_BASE64
+      - aws-eks/install-aws-iam-authenticator
+      - helm/install-helm-client:
+          version: v3.2.4
+      - run:
+          name: Deploy to dev cloud
+          command: helm upgrade --install protocol-reporting helm-config --set image.tag=<<parameters.tag>>
+
 workflows:
   build-test-deploy:
     jobs:
@@ -74,6 +94,17 @@ workflows:
           dockerfile: Dockerfile.production
           image: kivaprotocol/protocol-reporting
           tag: << pipeline.git.tag >>,latest
+      - push-to-dev:
+          context:
+            - continuous-deployment-dev
+          requires:
+            - docker/publish
+          filters: # only run for semver tagged versions
+            tags:
+              only: /^([0-9]+)\.([0-9]+)\.([0-9]+)/
+            branches:
+              ignore: /.*/
+          tag: << pipeline.git.tag >>
 
 orbs:
   node: circleci/node@4.1.0
