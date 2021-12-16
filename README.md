@@ -3,8 +3,9 @@
 This service handles the various reporting requirements that may be required by a specific implementation
 It is not required for the baseline protocol to work, but is just to facilitate compliance with regulations
 It provides a DB implementation for storing credential exchange metadata, such as timestamps, auth methods, etc
-with out exposing any underlying crendential data itself.
-It also exposes a GraphQL API to handle searching, filtering, sorting, etc for accessing the exchange data
+with out exposing any underlying credential data itself.
+It also exposes a GraphQL API to handle searching, filtering, sorting, etc for accessing the exchange data.
+It uses the library Nestjs-query which has great [documentation](https://doug-martin.github.io/nestjs-query/docs/graphql/getting-started/)
 
 ## Setup
 
@@ -16,9 +17,9 @@ cp dummy.env .env
 
 ## Developing
 
-For local development it's easiest to run the service directly from your comupter and connect to a dockerized DB
+For local development it's easiest to run the service directly from your computer and connect to a dockerized DB
 
-You will also need to update your .env file to refernce the DB host using localhost, not the docker network name
+You will also need to update your .env file to reference the DB host using localhost, not the docker network name
 ```
 POSTGRES_HOST=localhost
 ```
