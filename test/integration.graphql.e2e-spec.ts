@@ -1,14 +1,12 @@
+/* eslint-disable no-console */
 import request from 'supertest';
-import { Test } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from '../src/app/app.module';
 
 /**
  * Run mutations and queries against graphql api
  * For simplicity we test against a running reporting service instance and a dockerized postgres instance
  */
 describe('Test graphql API', () => {
-    let reportingUrl = 'http://localhost:3022';
+    const reportingUrl = 'http://localhost:3022';
 
     beforeAll(async () => {
     });
@@ -116,8 +114,8 @@ describe('Test graphql API', () => {
             expect(res.status).toBe(200);
             expect(res.body.data).not.toBeNull();
             expect(res.body.errors).toBeUndefined();
-            expect(res.body.data.reports.edges[0].node.id).toBe("1");
-            expect(res.body.data.reports.edges[0].node.auth_method).toBe("FINGERPRINT");
+            expect(res.body.data.reports.edges[0].node.id).toBe('1');
+            expect(res.body.data.reports.edges[0].node.auth_method).toBe('FINGERPRINT');
         });
     });
 
@@ -157,7 +155,7 @@ describe('Test graphql API', () => {
             expect(res.status).toBe(200);
             expect(res.body.data).not.toBeNull();
             expect(res.body.errors).toBeUndefined();
-            expect(res.body.data.reports.edges[0].node.id).toBe("2");
+            expect(res.body.data.reports.edges[0].node.id).toBe('2');
             expect(res.body.data.reports.edges[0].node.success).toBe(false);
         });
     });
