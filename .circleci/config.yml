@@ -4,7 +4,7 @@ jobs:
   build-and-test:
     executor:
       name: node/default
-      tag: '14.15.1'
+      tag: '16.14.2'
     steps:
       - checkout
       - run: npm install
@@ -26,8 +26,8 @@ jobs:
       - run:
           name: node npm setup
           command: |
-              nvm install v14.15.1
-              nvm alias default v14.15.1
+              nvm install v16.14.2
+              nvm alias default v16.14.2
               npm install
       - run:
           name: Start postgres docker compose and wait for readiness
