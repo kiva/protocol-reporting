@@ -31,7 +31,7 @@ export class AppService {
     }
 
     public async generateStatsReport(): Promise<ServiceReportDto> {
-        Logger.info(`stats report generated`);
+        Logger.info('stats report generated');
         const report: ServiceReportDto = new ServiceReportDto();
         report.serviceName = process.env.SERVICE_NAME;
         report.startedAt = AppService.startedAt.toDateString();
