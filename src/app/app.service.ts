@@ -30,7 +30,7 @@ export class AppService {
         app.use(json({ limit: HttpConstants.JSON_LIMIT }));
     }
 
-    public async generateStatsReport(): Promise<ServiceReportDto> {
+    public generateStatsReport(): ServiceReportDto {
         Logger.info('stats report generated');
         const report: ServiceReportDto = new ServiceReportDto();
         report.serviceName = process.env.SERVICE_NAME;
@@ -40,6 +40,6 @@ export class AppService {
 
         // TODO: once we determine which items we want to check versions on
         // TODO: mostly likely we should report db information such as postgres version
-        return Promise.resolve(report);
+        return report;
     }
 }
