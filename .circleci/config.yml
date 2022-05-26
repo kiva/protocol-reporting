@@ -9,6 +9,7 @@ jobs:
       - checkout
       - run: npm install
       - run: npm run build
+      - run: npm run lint
       - run: npm run test:local
 
   integration-test:

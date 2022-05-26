@@ -7,7 +7,7 @@ import { OrmConfig } from '../ormconfig.js';
 import { ReportModule } from '../report/report.module.js';
 
 // @ts-ignore: assertions are currently required when importing json
-import data from '../config/env.json' assert { type: 'json'};
+import data from '../config/env.json'; // assert { type: 'json'};
 
 /**
  * Initializes the Nest application
