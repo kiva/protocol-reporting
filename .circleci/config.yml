@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run: npm install
       - run: npm run build
-      - run: npm run lint
+      ß
       - run: npm run test:local
 
   integration-test:
@@ -29,6 +29,7 @@ jobs:
               nvm install v16.14.2
               nvm alias default v16.14.2
               npm install
+              npm run build
       - run:
           name: Start postgres docker compose and wait for readiness
           command: |
