@@ -4,21 +4,21 @@
   "private": false,
   "description": "Reporting service for Kiva Protocol",
   "license": "Apache-2.0",
-  "type": "commonjs",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kiva/protocol-reporting.git"
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "start": "rimraf dist && tsc && node -r dotenv/config dist/main.js",
-    "start:debug": "nodemon --legacy-watch",
+    "build": "rm -rf dist/ && tsc && cp package.json dist/",
+    "start": "npm run build && node -r dotenv/config --experimental-json-modules dist/main.js",
+    "start:prod": "node --experimental-json-modules dist/main.js",
+    "start:debug": "npm run build && node -r dotenv/config --experimental-json-modules dist/main.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "node -r dotenv/config node_modules/.bin/jest --runInBand  --forceExit",
-    "test:local": "NODE_ENV=LOCAL node -r dotenv/config node_modules/.bin/jest --runInBand -- local",
-    "test:integration": "NODE_ENV=LOCAL node -r dotenv/config node_modules/.bin/jest --runInBand -- integration",
+    "test": "node -r dotenv/config --experimental-vm-modules node_modules/.bin/jest --runInBand --forceExit",
+    "test:local": "NODE_ENV=LOCAL node -r dotenv/config --experimental-vm-modules node_modules/.bin/jest --runInBand --forceExit",
+    "test:integration": "NODE_ENV=LOCAL node -r dotenv/config --experimental-vm-modules node_modules/.bin/jest --runInBand -- integration",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "typeorm:migration": "node --require ts-node/register ./node_modules/typeorm/cli.js migration:create -d src/db/migration -n"
   },
@@ -27,32 +27,32 @@
     "@nestjs-query/core": "^0.30.0",
     "@nestjs-query/query-graphql": "^0.30.0",
     "@nestjs-query/query-typeorm": "^0.30.0",
-    "@nestjs/common": "^8.1.2",
+    "@nestjs/common": "^8.2.0",
     "@nestjs/core": "^8.1.0",
     "@nestjs/graphql": "^9.1.1",
-    "@nestjs/platform-express": "^8.1.0",
-    "@nestjs/swagger": "^5.1.0",
-    "@nestjs/typeorm": "^8.0.2",
+    "@nestjs/platform-express": "^8.2.0",
+    "@nestjs/swagger": "^5.2.1",
+    "@nestjs/typeorm": "^8.0.4",
     "@types/graphql": "^14.5.0",
     "apollo-server-core": "^3.4.0",
     "apollo-server-express": "^3.4.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
-    "crypto-js": "^4.0.0",
+    "crypto-js": "^4.1.1",
     "dataloader": "^2.0.0",
     "express-jwt": "^6.0.0",
     "graphql": "^15.6.1",
     "graphql-subscriptions": "^1.2.1",
-    "jwks-rsa": "^2.0.0",
+    "jwks-rsa": "^2.0.3",
     "opentracing": "^0.14.5",
     "pg": "^8.7.1",
-    "protocol-common": "^1.0.1",
+    "protocol-common": "^1.1.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.4.0",
+    "rxjs": "^7.5.5",
     "swagger-ui-express": "^4.1.6",
     "ts-morph": "^12.0.0",
     "typeorm": "^0.2.38",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "devDependencies": {
     "@nestjs/testing": "^8.1.0",
@@ -74,8 +74,12 @@
     "ts-node": "^10.3.0"
   },
   "jest": {
+    "extensionsToTreatAsEsm": [".ts"],
     "globals": {
-      "factories": {}
+      "factories": {},
+      "ts-jest": {
+        "useESM": true
+      }
     },
     "moduleFileExtensions": [
       "js",
@@ -83,7 +87,7 @@
       "ts"
     ],
     "rootDir": "test",
-    "testRegex": ".e2e-spec.ts$",
+    "testRegex": ".(e2e-spec|spec).ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
@@ -98,6 +102,6 @@
     "ignore": [
       "src/**/*.spec.ts"
     ],
-    "exec": "tsc && node -r dotenv/config dist/main.js"
+    "exec": "tsc && node -r dotenv/config --experimental-json-modules dist/main.js"
   }
 }
