@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
+import pkg from '@nestjs/graphql';
+const { GraphQLModule } = pkg;
 import { ConfigModule, ProtocolLoggerModule } from 'protocol-common';
 import { AppService } from './app.service.js';
 import { AppController } from './app.controller.js';

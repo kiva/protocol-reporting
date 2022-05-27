@@ -1,5 +1,8 @@
 import { FilterableField, IDField } from '@nestjs-query/query-graphql';
-import { ObjectType, GraphQLISODateTime, ID } from '@nestjs/graphql';
+import pkg from '@nestjs/graphql';
+const { ObjectType } = pkg;
+import GraphQLISODateTime from '@nestjs/graphql';
+import ID from '@nestjs/graphql';
 
 @ObjectType('Report')
 export class ReportDTO {
