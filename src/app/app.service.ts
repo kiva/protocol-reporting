@@ -18,8 +18,7 @@ export class AppService {
      */
     // eslint-disable-next-line @typescript-eslint/require-await
     public static async setup(app: INestApplication): Promise<void> {
-        const logger = new Logger(app.get(ProtocolLogger));
-        app.useLogger(logger);
+        app.useLogger(app.get(ProtocolLogger));
         app.use(traceware(process.env.SERVICE_NAME));
         AppService.startedAt = new Date();
 
