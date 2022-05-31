@@ -1,13 +1,14 @@
 import { FilterableField, IDField } from '@nestjs-query/query-graphql';
-import { ObjectType, GraphQLISODateTime, ID } from '@nestjs/graphql';
+import nestJsGraphql from '@nestjs/graphql';
+const { ObjectType } = nestJsGraphql;
 
 @ObjectType('Report')
 export class ReportDTO {
 
-    @IDField(() => ID)
+    @IDField(() => nestJsGraphql.ID)
     id!: number;
 
-    @FilterableField(() => GraphQLISODateTime)
+    @FilterableField(() => nestJsGraphql.GraphQLISODateTime)
     create_time!: Date;
 
     @FilterableField()

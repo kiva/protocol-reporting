@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { NestjsQueryGraphQLModule } from '@nestjs-query/query-graphql';
 import { NestjsQueryTypeOrmModule } from '@nestjs-query/query-typeorm';
-import { Report } from '../db/entity/report';
-import { ReportDTO } from './report.dto';
+import { Report } from '../db/entity/report.js';
+import { ReportDTO } from './report.dto.js';
 
 /**
  * Use NestjsQuery to register typeorm with graphql and set the default resolvers
