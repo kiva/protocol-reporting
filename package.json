@@ -38,7 +38,7 @@
     "class-validator": "^0.13.1",
     "crypto-js": "^4.1.1",
     "dataloader": "^2.0.0",
-    "express-jwt": "^6.0.0",
+    "express-jwt": "^8.2.0",
     "graphql": "^15.6.1",
     "graphql-subscriptions": "^1.2.1",
     "jwks-rsa": "^2.0.3",
